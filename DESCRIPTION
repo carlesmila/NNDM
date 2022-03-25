@@ -1,0 +1,22 @@
+Package: NNDM
+Title: Nearest Neighbour Distance Matching Leave-One-Out Cross-Validation for map validation
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Carles",
+           family = "Milà",
+           role = c("aut", "cre"),
+           email = "carles.mila@gmail.com",
+           comment = c(ORCID = "0000-0003-0470-0760"))
+Description: This packages provides tools to perform NNDM LOO CV to estimate map accuracy of a given spatial prediction task.
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: 
+    sf,
+    ggplot2,
+    lwgeom
