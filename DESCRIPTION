@@ -12,11 +12,10 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: 
-    sf,
-    ggplot2,
-    lwgeom
+    sf (>= 1.0-8),
+    ggplot2

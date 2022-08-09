@@ -81,5 +81,5 @@ test_that("NNDM yields the expected results for all CRS", {
   tpoints_sf_4326 <- sf::st_set_crs(tpoints_sf, 4326)
   ppoints_sf_4326 <- sf::st_set_crs(ppoints_sf, 4326)
   expect_equal(as.numeric(round(
-    nndm(tpoints_sf_4326, ppoints_sf_4326, 10, 0.5)$Gjstar[5], 4)), 546757.98)
+    nndm(tpoints_sf_4326, ppoints_sf_4326, 100000, 0.5)$Gjstar[5], 4)), 548695.73)
 })

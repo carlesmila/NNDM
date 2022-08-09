@@ -11,8 +11,8 @@ nndm(tpoints, ppoints, phi, min_train = 0)
 
 \item{ppoints}{sf or sfc point object. Contains the target prediction points.}
 
-\item{phi}{Numeric. Estimate of the landscape autocorrelation range  (in the
-same units as the tpoints and ppoints).}
+\item{phi}{Numeric. Estimate of the landscape autocorrelation range in the
+same units as the tpoints and ppoints for projected CRS, in meters for geographic CRS.}
 
 \item{min_train}{Numeric between 0 and 1. Minimum proportion of training
 data that must be used in each CV fold. Defaults to 0 (i.e. no restrictions).}
@@ -35,7 +35,7 @@ Matching Leave-One-Out Cross-Validation for map validation' submitted to
 \emph{Methods in Ecology and Evolution} (2022).
 
 Euclidean distances are used for projected
-and non-defined CRS, otherwise the function uses great circle distances.
+and non-defined CRS, otherwise the function uses great circle distances (units in meters).
 }
 \examples{
 library("NNDM")
