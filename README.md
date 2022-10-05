@@ -6,6 +6,9 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
+**Note:** An updated version of NNDM with enhanced capabilities has been
+included in the `CAST` package (available on CRAN).
+
 The goal of the `NNDM` package is to provide tools to perform Nearest
 Neighbour Distance Matching (NNDM) Leave-One-Out (LOO) Cross-Validation
 (CV) to estimate map accuracy for a given prediction task. In NNDM LOO
@@ -157,19 +160,19 @@ mod_bLOO <- train(zinc ~ x + y + dist + ffreq + soil,
 ### NNDM LOO CV
 
 Similarly, we compute NNDM LOO CV indices using the function `nndm`.
-When plotting the object, the estimated *G* functions are shown. In this
+When plotting the object, the estimated $G$ functions are shown. In this
 case, the nearest neighbour distance distribution function found during
-LOO CV *Ĝ*<sub>*j*</sub>(*r*) is smaller than the nearest neighbour
-distance distribution found during prediction *Ĝ*<sub>*i* *j*</sub>(*r*)
-for short distances, and is slightly larger for long distances (see our
-related paper for definitions of *G* functions and more detail on their
-interpretation). *Ĝ*<sub>*j*</sub><sup>\*</sup>(*r*, **L**), i.e. the
-nearest neighbour distance distribution during NNDM LOO CV, overlaps
-with *Ĝ*<sub>*j*</sub>(*r*) for short distances but matches
-*Ĝ*<sub>*i* *j*</sub>(*r*) for long distances. In any case, by printing
-the object we see that, in this case, the difference between LOO CV and
-NNDM CV is minimal, as on average 153.9 points out of 154 are used for
-training in each NNDM LOO CV iteration.
+LOO CV $\hat{G}_j(r)$ is smaller than the nearest neighbour distance
+distribution found during prediction $\hat{G}_{i \, j}(r)$ for short
+distances, and is slightly larger for long distances (see our related
+paper for definitions of $G$ functions and more detail on their
+interpretation). $\hat{G}_{j}^{*} (r, \mathbf{L})$, i.e. the nearest
+neighbour distance distribution during NNDM LOO CV, overlaps with
+$\hat{G}_j(r)$ for short distances but matches $\hat{G}_{i \, j}(r)$ for
+long distances. In any case, by printing the object we see that, in this
+case, the difference between LOO CV and NNDM CV is minimal, as on
+average 153.9 points out of 154 are used for training in each NNDM LOO
+CV iteration.
 
 ``` r
 # Compute NNDM indices
@@ -199,11 +202,28 @@ mod_NNDM <- train(zinc ~ x + y + dist + ffreq + soil,
 
 ### Comparing results
 
-In this example, we see that LOO and NNDM LOO CV return very similar
-results while bLOO CV results in a much lower estimated map accuracy.
+We compute the different CV results by manually computing the statistics
+for bLOO and NNDM (`caret`results for LOO customised folds are not
+appropriate):
+
+``` r
+# Compute and return results
+stats_LOO <- data.frame(validation="LOO CV",
+                        RMSE=mod_LOO$results$RMSE, 
+                        R2=mod_LOO$results$Rsquared)
+stats_bLOO <- data.frame(validation="bLOO CV",
+                         RMSE=with(mod_bLOO$pred, sqrt(mean((obs-pred)^2))), 
+                         R2=with(mod_bLOO$pred, cor(obs, pred)^2))
+stats_NNDM <- data.frame(validation="NNDM LOO CV",
+                         RMSE=with(mod_NNDM$pred, sqrt(mean((obs-pred)^2))), 
+                         R2=with(mod_NNDM$pred, cor(obs, pred)^2))
+```
 
 | validation  |   RMSE |   R2 |
 |:------------|-------:|-----:|
 | LOO CV      | 202.13 | 0.71 |
 | bLOO CV     | 288.36 | 0.42 |
 | NNDM LOO CV | 203.43 | 0.70 |
+
+In this example, we see that LOO and NNDM LOO CV return very similar
+results while bLOO CV results in a much lower estimated map accuracy.

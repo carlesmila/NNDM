@@ -16,7 +16,10 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
+**Note:** An updated version of NNDM with enhanced capabilities has been included in the `CAST` package (available on CRAN).
+
 The goal of the `NNDM` package is to provide tools to perform Nearest Neighbour Distance Matching (NNDM) Leave-One-Out (LOO) Cross-Validation (CV) to estimate map accuracy for a given prediction task. In NNDM LOO CV, the nearest neighbour distance distribution function between the test and training data during the LOO CV process is matched to the nearest neighbour distance distribution function between the target prediction and training points, for those distances in which autocorrelation is present. NNDM CV can be used for various prediction areas (geographic interpolation/extrapolation), sampling patterns (regular/random/clustered), and landscape autocorrelation ranges. The package also includes tools to compute buffered-LOO (bLOO) CV.
+
 
 Reference:
 
@@ -161,19 +164,23 @@ mod_NNDM <- train(zinc ~ x + y + dist + ffreq + soil,
 
 ### Comparing results
 
-In this example, we see that LOO and NNDM LOO CV return very similar results while bLOO CV results in a much lower estimated map accuracy. 
+We compute the different CV results by manually computing the statistics for bLOO and NNDM (`caret`results for LOO customised folds are not appropriate):
 
-```{r compare results, echo=F}
+```{r compare results}
 # Compute and return results
 stats_LOO <- data.frame(validation="LOO CV",
-                        RMSE=with(mod_LOO$pred, sqrt(mean((obs-pred)^2))), 
-                        R2=with(mod_LOO$pred, cor(obs, pred)^2))
+                        RMSE=mod_LOO$results$RMSE, 
+                        R2=mod_LOO$results$Rsquared)
 stats_bLOO <- data.frame(validation="bLOO CV",
                          RMSE=with(mod_bLOO$pred, sqrt(mean((obs-pred)^2))), 
                          R2=with(mod_bLOO$pred, cor(obs, pred)^2))
 stats_NNDM <- data.frame(validation="NNDM LOO CV",
                          RMSE=with(mod_NNDM$pred, sqrt(mean((obs-pred)^2))), 
                          R2=with(mod_NNDM$pred, cor(obs, pred)^2))
+```
 
+```{r compare results2, echo=F}
 kable(rbind(stats_LOO, stats_bLOO, stats_NNDM), digits = 2)
 ```
+
+In this example, we see that LOO and NNDM LOO CV return very similar results while bLOO CV results in a much lower estimated map accuracy. 
